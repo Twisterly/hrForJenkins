@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+		http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="1" author="mashafadik@yahoo.com">
+        <sql>
+            CREATE TABLE IF NOT EXISTS job_title (
+            `job_id` BIGINT(19) PRIMARY KEY AUTO_INCREMENT,
+            `job_title_name` VARCHAR(255)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="2" author="mashafadik@yahoo.com">
+        <sql>
+            CREATE TABLE IF NOT EXISTS employees (
+            `employee_id` BIGINT(19) PRIMARY KEY AUTO_INCREMENT,
+            `first_name` VARCHAR(255),
+            `last_name` VARCHAR(255),
+            `birth_date` DATE,
+            `cell_phone` VARCHAR(45),
+            `job_title_id` BIGINT(19),
+            CONSTRAINT `FK_job_title` FOREIGN KEY(`job_title_id`)
+            REFERENCES job_title(`job_id`)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="3" author="mashafadik@yahoo.com">
+        <sql>
+            CREATE TABLE IF NOT EXISTS projects (
+            `project_id` BIGINT(19) PRIMARY KEY AUTO_INCREMENT,
+            `project_name` VARCHAR(45)
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="4" author="mashafadik@yahoo.com">
+        <sql>
+            CREATE TABLE IF NOT EXISTS employees_projects (
+            `employeeID` BIGINT(19) NOT NULL,
+            `projectID` BIGINT(19) NOT NULL,
+            PRIMARY KEY (employeeID, projectID),
+            INDEX employeeID (employeeID),
+            INDEX projectID (projectID),
+            CONSTRAINT FK_projects FOREIGN KEY (projectID)
+            REFERENCES projects (project_id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+            CONSTRAINT FK_employee FOREIGN KEY (employeeID)
+            REFERENCES employees (employee_id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE
+            );
+        </sql>
+    </changeSet>
+
+    <changeSet id="5" author="mashafadik@yahoo.com">
+        <sql>
+            INSERT INTO projects (project_name) VALUES ('ALPHA-BANK');
+            INSERT INTO projects (project_name) VALUES ('TINKOFF');
+            INSERT INTO projects (project_name) VALUES ('ROSTELECOM');
+            INSERT INTO projects (project_name) VALUES ('PRIOPBANK');
+            INSERT INTO projects (project_name) VALUES ('ANDERSEN');
+            INSERT INTO projects (project_name) VALUES ('ASTON');
+        </sql>
+    </changeSet>
+
+    <changeSet id="6" author="mashafadik@yahoo.com">
+        <sql>
+            INSERT INTO job_title (job_title_name) VALUES ('developer');
+            INSERT INTO job_title (job_title_name) VALUES ('accountant');
+            INSERT INTO job_title (job_title_name) VALUES ('marketer');
+            INSERT INTO job_title (job_title_name) VALUES ('PR-specialist');
+            INSERT INTO job_title (job_title_name) VALUES ('sales manager');
+        </sql>
+    </changeSet>
+
+    <changeSet id="7" author="mashafadik@yahoo.com">
+        <sql>
+            INSERT INTO employees (first_name, last_name, birth_date, cell_phone, job_title_id) VALUES ('Maria', 'Chachik', '1990-08-16', '+375336962747', '3');
+            INSERT INTO employees (first_name, last_name, birth_date, cell_phone, job_title_id) VALUES ('Irina', 'Petrova', '1988-02-10', '+375336968090', '2');
+            INSERT INTO employees (first_name, last_name, birth_date, cell_phone, job_title_id) VALUES ('Ivan', 'Ivanov', '1993-07-09', '+375295436721', '1');
+            INSERT INTO employees (first_name, last_name, birth_date, cell_phone, job_title_id) VALUES ('Petr', 'Petrov', '2000-12-12', '+375330984532', '4');
+            INSERT INTO employees (first_name, last_name, birth_date, cell_phone, job_title_id) VALUES ('Tatyana', 'Pirogova', '2001-11-07', '+375339875432', '2');
+
+        </sql>
+    </changeSet>
+
+    <changeSet id="8" author="mashafadik@yahoo.com">
+        <sql>
+            INSERT INTO employees_projects (employeeID, projectID) VALUES ('1', 5);
+            INSERT INTO employees_projects (employeeID, projectID) VALUES ('1', 6);
+            INSERT INTO employees_projects (employeeID, projectID) VALUES ('2', 1);
+            INSERT INTO employees_projects (employeeID, projectID) VALUES ('3', 1);
+            INSERT INTO employees_projects (employeeID, projectID) VALUES ('4', 3);
+
+        </sql>
+    </changeSet>
+
+
+
+
+</databaseChangeLog>
